@@ -120,6 +120,14 @@ def make_food():
     food_x = random.randint(min_x,max_x)*SQUARE_SIZE
     food_y = random.randint(min_y,max_y)*SQUARE_SIZE
 
+    food.hideturtle()
+    food.goto(food_x, food_y)
+    food_pos2= food.pos()
+    food_pos.append(food_pos2)
+    food_st= food.stamp()
+    food_stamps.append(food_st)
+    
+    print(food_pos)
     
 
 
@@ -149,6 +157,9 @@ def move_snake():
         quit()
 
 
+   
+       
+
     if direction==RIGHT:
         snake.goto(x_pos + SQUARE_SIZE, y_pos)
         print("You moved right!")
@@ -162,6 +173,20 @@ def move_snake():
     elif direction==DOWN:
         snake.goto(x_pos , y_pos- SQUARE_SIZE)
         print("You moved down!")
+    if snake.pos() in pos_list:
+        print("quit")
+        quit()
+
+
+
+
+
+
+
+
+        
+        
+        
     #4. Write the conditions for UP and DOWN on your own
     ##### YOUR CODE HERE
 
@@ -185,12 +210,14 @@ def move_snake():
         food_stamps.pop(food_ind) #Remove eaten food stamp
         print("You have eaten the food!")
 
-  
-
-
-    old_stamp = stamp_list.pop(0)
-    snake.clearstamp(old_stamp)
-    pos_list.pop(0)
+    else:
+        old_stamp = stamp_list.pop(0)
+        snake.clearstamp(old_stamp)
+        pos_list.pop(0)
+        
+    if len(food_stamps) <= 0 :
+        make_food()
+   
     turtle.ontimer(move_snake,TIME_STEP)
 
 
@@ -203,7 +230,7 @@ food = turtle.clone()
 food.shape("trash.gif") 
 
 #Locations of food
-food_pos = [(100,100), (-100,100), (-100,-100), (100,-100)]
+#food_pos = [(100,100), (-100,100), (-100,-100), (100,-100)]
 food_stamps = []
 
 
@@ -213,7 +240,9 @@ for this_food_pos in food_pos :
     food_stamps.append(food_st)
     food.hideturtle()
     
+
     
     
 move_snake()
+
 
