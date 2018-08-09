@@ -6,12 +6,13 @@ Date:7\8\18
 import turtle
 import random #We'll need this later in the lab
 
-turtle.tracer(1,0) #This helps the turtle move more smoothly
+turtle.tracer(1,0)#This helps the turtle move more smoothly
+turtle.register_shape("cat.gif")
 
-SIZE_X=800
-SIZE_Y=500
-turtle.setup(SIZE_X, SIZE_Y) #Curious? It's the turtle window  
-                             #size. 
+SIZE_X=400
+SIZE_Y=250
+turtle.setup(1000, 1000) #Curious? It's the turtle window  
+turtle.bgcolor("lightpink")                             #size. 
 turtle.penup()
 
 SQUARE_SIZE = 20
@@ -25,7 +26,7 @@ food_stamps = []
 
 #Set up positions (x,y) of boxes that make up the snake
 snake = turtle.clone()
-snake.shape("square")
+snake.shape("cat.gif")
 
 #Hide the turtle object (it's an arrow - we don't need to see it)
 turtle.hideturtle()
@@ -74,6 +75,27 @@ UP_EDGE = 250
 DOWN_EDGE = -250
 RIGHT_EDGE = 400
 LEFT_EDGE = -400
+
+border=turtle.Turtle()
+border.penup()
+border.pencolor('lightblue')
+border.pensize(10)
+border.goto(RIGHT_EDGE, UP_EDGE)
+border.pendown()
+border.goto(RIGHT_EDGE, DOWN_EDGE)
+border.goto(LEFT_EDGE, DOWN_EDGE)
+border.goto(LEFT_EDGE, UP_EDGE)
+border.goto(RIGHT_EDGE, UP_EDGE)
+
+border.hideturtle()
+border.penup()
+border.goto(0, 300)
+border.pendown()
+border.write("---snake game---" , align= "center" , font= ("arial" , 100 , "normal"))
+
+
+
+
 
 
 def up():
@@ -215,19 +237,19 @@ def move_snake():
         snake.clearstamp(old_stamp)
         pos_list.pop(0)
         
-    if len(food_stamps) <= 0 :
+    if len(food_stamps) <= 2 :
         make_food()
    
     turtle.ontimer(move_snake,TIME_STEP)
 
 
-turtle.register_shape("trash.gif") #Add trash picture
+turtle.register_shape("pizza3.gif") #Add trash picture
                       # Make sure you have downloaded this shape 
                       # from the Google Drive folder and saved it
                       # in the same folder as this Python script
 
 food = turtle.clone()
-food.shape("trash.gif") 
+food.shape("pizza3.gif") 
 
 #Locations of food
 #food_pos = [(100,100), (-100,100), (-100,-100), (100,-100)]
