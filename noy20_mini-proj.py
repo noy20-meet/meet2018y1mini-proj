@@ -12,7 +12,7 @@ turtle.register_shape("cat.gif")
 SIZE_X=400
 SIZE_Y=250
 turtle.setup(1000, 1000) #Curious? It's the turtle window  
-turtle.bgcolor("lightpink")                             #size. 
+turtle.bgcolor("lightyellow")                             #size. 
 turtle.penup()
 
 SQUARE_SIZE = 20
@@ -23,6 +23,10 @@ pos_list = []
 stamp_list = []
 food_pos = []
 food_stamps = []
+score = 0
+bad_pos=[]
+bad_stamps=[]
+
 
 #Set up positions (x,y) of boxes that make up the snake
 snake = turtle.clone()
@@ -59,7 +63,7 @@ UP_ARROW = "Up" #Make sure you pay attention to upper and lower
 LEFT_ARROW = "Left" #Pay attention to upper and lower case
 DOWN_ARROW = "Down" #Pay attention to upper and lower case
 RIGHT_ARROW = "Right" #Pay attention to upper and lower case
-TIME_STEP = 200 #Update snake position after this many 
+TIME_STEP = 130 #Update snake position after this many 
                 #milliseconds
 SPACEBAR = "space" # Careful, it's not supposed to be capitalized!
 
@@ -91,7 +95,17 @@ border.hideturtle()
 border.penup()
 border.goto(0, 300)
 border.pendown()
-border.write("---snake game---" , align= "center" , font= ("arial" , 100 , "normal"))
+border.write("-snake game-" , align= "center" , font= ("Comic Sans MS" , 80 , "normal"))
+scores=turtle.Turtle()
+scores.penup()
+scores.color("lightpink")
+
+scores.goto(0, -300)
+scores.pendown()
+
+scores.write("score = 000"+str(score) , align= "center" , font= ("Comic Sans MS" , 20 , "normal"))
+
+
 
 
 
@@ -150,6 +164,22 @@ def make_food():
     food_stamps.append(food_st)
     
     print(food_pos)
+def make_bad():
+    min_x=-int(SIZE_X/2/SQUARE_SIZE)+1
+    max_x=int(SIZE_X/2/SQUARE_SIZE)-1
+    min_y=-int(SIZE_Y/2/SQUARE_SIZE)-1
+    max_y=int(SIZE_Y/2/SQUARE_SIZE)+1
+    bad_x = random.randint(min_x,max_x)*SQUARE_SIZE
+    bad_y = random.randint(min_y,max_y)*SQUARE_SIZE
+
+    bad.hideturtle()
+    bad.goto(bad_x, bad_y)
+    bad_pos2= bad.pos()
+    bad_pos.append(bad_pos2)
+    bad_st= bad.stamp()
+    bad_stamps.append(bad_st)
+    
+    print(bad_pos)
     
 
 
@@ -222,7 +252,7 @@ def move_snake():
     ######## SPECIAL PLACE - Remember it for Part 5
     #pop zeroth element in pos_list to get rid of last the last 
     #piece of the tail
-    global food_stamps, food_pos
+    global food_stamps, food_pos, score
     #If snake is on top of food item
     if snake.pos() in food_pos:
         food_ind=food_pos.index(snake.pos()) #What does this do?
@@ -231,25 +261,38 @@ def move_snake():
         food_pos.pop(food_ind) #Remove eaten food position
         food_stamps.pop(food_ind) #Remove eaten food stamp
         print("You have eaten the food!")
+        score= score + 10
+        
+        scores.clear()
+        scores.write("score= "+str(score), align= "center" , font= ("Comic Sans MS" , 20 , "normal"))
+
+    elif snake.pos() in bad_pos:
+        quit()
 
     else:
         old_stamp = stamp_list.pop(0)
         snake.clearstamp(old_stamp)
         pos_list.pop(0)
-        
+    if snake.pos() in food_pos:   
+        quit()
     if len(food_stamps) <= 2 :
         make_food()
+    if len(bad_stamps) <= 1 :
+        make_bad()
    
     turtle.ontimer(move_snake,TIME_STEP)
 
 
-turtle.register_shape("pizza3.gif") #Add trash picture
+turtle.register_shape("candy.gif") #Add trash picture
                       # Make sure you have downloaded this shape 
                       # from the Google Drive folder and saved it
                       # in the same folder as this Python script
 
 food = turtle.clone()
-food.shape("pizza3.gif") 
+food.shape("candy.gif")
+turtle.register_shape("bad.gif")
+bad = turtle.clone()
+bad.shape("bad.gif")
 
 #Locations of food
 #food_pos = [(100,100), (-100,100), (-100,-100), (100,-100)]
